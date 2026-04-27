@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stats Machine</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body id="sm-body" class="theme-nixie">
+
+<!-- ══════════ ONBOARDING ══════════ -->
+<div id="onboarding" class="onboard-wrap hidden">
+  <div class="onboard-slide" id="ob-0">
+    <div class="ob-emoji">🤖</div>
+    <div class="ob-title">Welcome to Stats Machine</div>
+    <div class="ob-desc">Your personal browser intelligence dashboard. Everything runs locally — no servers, no accounts, your data stays yours.</div>
+  </div>
+  <div class="onboard-slide hidden" id="ob-1">
+    <div class="ob-emoji">📊</div>
+    <div class="ob-title">5 Profiles, One Extension</div>
+    <div class="ob-desc"><strong>Focus</strong> tracks your daily concentration score &amp; habits. <strong>Player</strong> monitors session time &amp; speed. <strong>Surfer</strong> covers privacy. <strong>Devs</strong> &amp; <strong>Pixel</strong> analyse each page.</div>
+  </div>
+  <div class="onboard-slide hidden" id="ob-2">
+    <div class="ob-emoji">🍅</div>
+    <div class="ob-title">Built-in Pomodoro &amp; More</div>
+    <div class="ob-desc">Use the Focus tab to start Pomodoro timers, set soft site time limits, earn achievements, and review your weekly browsing heatmap.</div>
+  </div>
+  <div class="onboard-dots">
+    <div class="ob-dot active" data-i="0"></div>
+    <div class="ob-dot" data-i="1"></div>
+    <div class="ob-dot" data-i="2"></div>
+  </div>
+  <div class="onboard-btns">
+    <button class="ob-btn secondary hidden" id="ob-back">Back</button>
+    <button class="ob-btn primary" id="ob-next">Next →</button>
+  </div>
+</div>
+
+<!-- ══════════ MAIN APP ══════════ -->
+<div id="app-root">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="brand">
+      <div class="brand-icon">
+        <img src="icons/icon48.png" alt="Stats Machine" class="brand-logo">
+      </div>
+      <div>
+        <div class="brand-name">Stats Machine</div>
+        <div class="brand-sub">browser intelligence</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-links">
+        <a href="https://ko-fi.com/gitwingo" target="_blank" class="kofi-btn" title="Buy me a Ko-fi ☕">
+          <svg viewBox="0 0 16 16" fill="currentColor" width="10" height="10"><path d="M3 2h10a1 1 0 011 1v3a5 5 0 01-5 5H6a3 3 0 01-3-3V3a1 1 0 011-1zm8 2H4v4a1 1 0 001 1h5a3 3 0 003-3V4z"/><path d="M4 12h6l.5 2H3.5L4 12z"/></svg>
+          <span>Buy me a Ko-fi</span>
+        </a>
+        <a href="https://github.com/gitwingo" target="_blank" class="credit-link" title="Made by gitwingo">
+          <svg viewBox="0 0 16 16" fill="currentColor" width="9" height="9"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          <span>gitwingo</span>
+        </a>
+      </div>
+      <div class="header-meta">
+        <div class="live-dot"><div class="dot-pulse"></div><span class="live-label">live</span></div>
+        <div class="url-line" id="url-display">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile tabs — order: Player, Devs, Pixel, Surfer, Focus, Settings -->
+  <div class="profiles">
+    <div class="profile-btn active" data-profile="player">
+      <div class="profile-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="3" width="7" height="6" rx="1"/><path d="M8 5.5l3-1.5v4l-3-1.5" stroke-linejoin="round"/></svg></div>
+      <span class="profile-label">Player</span>
+    </div>
+    <div class="profile-btn" data-profile="devs">
+      <div class="profile-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M2 4L0.5 6L2 8M10 4L11.5 6L10 8M7 2L5 10" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="profile-label">Devs</span>
+    </div>
+    <div class="profile-btn" data-profile="pixel">
+      <div class="profile-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="6" cy="6" r="4.5"/><circle cx="6" cy="6" r="1.5" fill="currentColor" stroke="none"/><path d="M6 1.5V3M6 9v1.5M1.5 6H3M9 6h1.5" stroke-linecap="round"/></svg></div>
+      <span class="profile-label">Pixel</span>
+    </div>
+    <div class="profile-btn" data-profile="surfer">
+      <div class="profile-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="6" cy="6" r="4.5"/><path d="M1.5 6h9M6 1.5C5 3 4.5 4.5 4.5 6S5 9 6 10.5M6 1.5C7 3 7.5 4.5 7.5 6S7 9 6 10.5" stroke-linecap="round"/></svg></div>
+      <span class="profile-label">Surfer</span>
+    </div>
+    <div class="profile-btn" data-profile="focus">
+      <div class="profile-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="6" cy="6" r="4.5"/><circle cx="6" cy="6" r="1.8" fill="currentColor" stroke="none"/></svg></div>
+      <span class="profile-label">Focus</span>
+    </div>
+    <div class="profile-btn" data-profile="settings">
+      <div class="profile-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M2 4.5h8M2 7.5h8" stroke-linecap="round"/><rect x="4" y="3" width="2" height="3" rx=".5"/><rect x="6" y="6" width="2" height="3" rx=".5"/></svg></div>
+      <span class="profile-label">Settings</span>
+    </div>
+  </div>
+
+  <!-- ───────────── FOCUS ───────────── -->
+  <div class="profile-panel hidden" id="panel-focus">
+
+    <!-- Focus Score Hero -->
+    <div class="focus-hero">
+      <div class="focus-score-wrap">
+        <canvas id="focus-ring" width="80" height="80"></canvas>
+        <div class="focus-score-inner">
+          <div class="focus-score-num" id="f-score">—</div>
+          <div class="focus-score-lbl">focus</div>
+        </div>
+      </div>
+      <div class="focus-hero-right">
+        <div class="focus-meta-row"><span class="fm-label">streak</span><span class="fm-val good" id="f-streak">—</span></div>
+        <div class="focus-meta-row"><span class="fm-label">today total</span><span class="fm-val" id="f-today">—</span></div>
+        <div class="focus-meta-row"><span class="fm-label">idle time</span><span class="fm-val" id="f-idle">—</span></div>
+        <div class="focus-meta-row"><span class="fm-label">first active</span><span class="fm-val" id="f-first">—</span></div>
+        <div class="focus-meta-row"><span class="fm-label">tab hops</span><span class="fm-val" id="f-hops">—</span></div>
+      </div>
+    </div>
+
+    <!-- Category breakdown -->
+    <div class="section-bar"><div class="sl"></div><span class="section-label">time breakdown</span><div class="sl"></div></div>
+    <div id="f-categories" class="category-bars"></div>
+
+    <!-- Heatmap -->
+    <div class="section-bar"><div class="sl"></div><span class="section-label">90-day heatmap</span><div class="sl"></div></div>
+    <div class="heatmap-wrap">
+      <canvas id="f-heatmap" height="54"></canvas>
+    </div>
+
+    <!-- Pomodoro -->
+    <div class="section-bar"><div class="sl"></div><span class="section-label">pomodoro</span><div class="sl"></div></div>
+    <div class="pomo-card">
+      <div class="pomo-timer-wrap">
+        <div class="pomo-mode-badge" id="pomo-mode-badge">WORK</div>
+        <div class="pomo-time" id="pomo-time">25:00</div>
+        <!--<div class="pomo-round-dots" id="pomo-dots"></div>-->
+      </div>
+      <div class="pomo-break-picker" id="pomo-break-picker">
+        <span class="pomo-break-label">Break:</span>
+        <button class="pomo-break-btn active" id="pomo-break-short" data-type="short">Short</button>
+        <button class="pomo-break-btn" id="pomo-break-long" data-type="long">Long</button>
+      </div>
+      <div class="pomo-controls">
+        <button class="pomo-btn start" id="pomo-start">▶ Start</button>
+        <button class="pomo-btn stop hidden" id="pomo-stop">■ Stop</button>
+        <!--<button class="pomo-btn skip" id="pomo-skip" title="Skip to next phase">⏭</button>-->
+      </div>
+      <div class="pomo-stats-row">
+        <span class="pomo-stat"><span class="pomo-stat-num" id="pomo-today">0</span> today</span>
+        <span class="pomo-stat"><span class="pomo-stat-num" id="pomo-total">0</span> total</span>
+      </div>
+    </div>
+
+    <!-- Achievements -->
+    <div class="section-bar"><div class="sl"></div><span class="section-label">achievements</span><div class="sl"></div></div>
+    <div id="f-achievements" class="achievements-grid"></div>
+
+    <!-- Weekly recap -->
+    <div id="f-weekly-recap" class="weekly-recap hidden"></div>
+
+  </div>
+
+  <!-- ───────────── PLAYER ───────────── -->
+  <div class="profile-panel" id="panel-player">
+    <div class="section-bar"><div class="sl"></div><span class="section-label">session &amp; activity</span><div class="sl"></div></div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-val anim" id="p-tabtime">—</div><div class="stat-lbl">tab time</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="p-today">—</div><div class="stat-lbl">today total</div></div>
+      <div class="stat-card"><div class="stat-val good anim" id="p-streak">—</div><div class="stat-lbl">day streak 🔥</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="p-tabs">—</div><div class="stat-lbl">open tabs</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="p-idle">—</div><div class="stat-lbl">idle today</div></div>
+      <div class="stat-card"><div class="stat-val" id="p-sound">—</div><div class="stat-lbl">sound</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="p-hops">—</div><div class="stat-lbl">tab hops</div></div>
+      <div class="stat-card"><div class="stat-val" id="p-notif">—</div><div class="stat-lbl">notifications</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="p-doom">—</div><div class="stat-lbl">doom scrolls</div></div>
+    </div>
+    <div class="section-bar"><div class="sl"></div><span class="section-label">data transfer</span><div class="sl"></div></div>
+    <div class="stat-grid">
+      <div class="speed-card">
+        <div class="block-header">
+          <span class="block-title">network speed</span>
+          <div class="ping-pill"><div class="ping-dot" id="p-ping-dot"></div><span class="ping-label">ping</span><span class="ping-val" id="p-ping-val">—</span><span class="ping-unit">ms</span></div>
+        </div>
+        <div class="totals-row">
+          <div class="total-cell"><div class="total-num dl" id="p-total-dl">—</div><div class="total-lbl">↓ downloaded</div></div>
+          <div class="total-cell"><div class="total-num ul" id="p-total-ul">—</div><div class="total-lbl">↑ uploaded</div></div>
+        </div>
+        <div class="speed-rows">
+          <div class="speed-row"><span class="speed-dir dl">↓</span><div class="speed-track"><div class="speed-fill dl" id="p-dl-bar" style="width:0%"></div></div><span class="speed-val dl" id="p-dl-val">0.0 <span class="speed-unit">KB/s</span></span></div>
+          <div class="speed-row"><span class="speed-dir ul">↑</span><div class="speed-track"><div class="speed-fill ul" id="p-ul-bar" style="width:0%"></div></div><span class="speed-val ul" id="p-ul-val">0.0 <span class="speed-unit">KB/s</span></span></div>
+        </div>
+        <div class="spark-wrap"><div class="spark-label-row"><span class="spark-lbl">↓ download — last 20s</span><span class="spark-lbl" id="p-spark-peak">peak: —</span></div><canvas class="spark-canvas" id="p-sparkline" height="32"></canvas></div>
+      </div>
+    </div>
+    <div class="section-bar"><div class="sl"></div><span class="section-label">top sites today</span><div class="sl"></div></div>
+    <div id="p-top-sites" class="top-sites-list"></div>
+  </div>
+
+  <!-- ───────────── SURFER ───────────── -->
+  <div class="profile-panel hidden" id="panel-surfer">
+    <div class="section-bar"><div class="sl"></div><span class="section-label">privacy &amp; safety</span><div class="sl"></div></div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-val" id="s-https">—</div><div class="stat-lbl">connection</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="s-cookies">—</div><div class="stat-lbl">cookies</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="s-trackers">—</div><div class="stat-lbl">trackers</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="s-3p">—</div><div class="stat-lbl">3rd-party scripts</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="s-ads">—</div><div class="stat-lbl">ads on page</div></div>
+      <div class="stat-card"><div class="stat-val" id="s-login">—</div><div class="stat-lbl">login form</div></div>
+    </div>
+    <div class="section-bar"><div class="sl"></div><span class="section-label">trackers found</span><div class="sl"></div></div>
+    <div id="s-tracker-list" class="tracker-list"></div>
+    <div class="section-bar"><div class="sl"></div><span class="section-label">site permissions</span><div class="sl"></div></div>
+    <div class="permissions-list">
+      <div class="perm-row"><span class="perm-name">Notifications</span><span class="perm-val" id="sp-notif">—</span></div>
+      <div class="perm-row"><span class="perm-name">Camera</span><span class="perm-val" id="sp-camera">—</span></div>
+      <div class="perm-row"><span class="perm-name">Microphone</span><span class="perm-val" id="sp-mic">—</span></div>
+      <div class="perm-row"><span class="perm-name">Geolocation</span><span class="perm-val" id="sp-geo">—</span></div>
+      <div class="perm-row"><span class="perm-name">Local Storage</span><span class="perm-val" id="sp-ls">—</span></div>
+    </div>
+    <div class="section-bar"><div class="sl"></div><span class="section-label">time &amp; habits</span><div class="sl"></div></div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-val anim" id="s-tabtime">—</div><div class="stat-lbl">tab time</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="s-today">—</div><div class="stat-lbl">today total</div></div>
+      <div class="stat-card"><div class="stat-val good anim" id="s-streak">—</div><div class="stat-lbl">day streak 🔥</div></div>
+      <div class="stat-card"><div class="stat-val" id="s-read">—</div><div class="stat-lbl">read time</div></div>
+      <div class="stat-card"><div class="stat-val" id="s-scroll">—</div><div class="stat-lbl">scroll depth</div></div>
+      <div class="stat-card"><div class="stat-val" id="s-co2">—</div><div class="stat-lbl">CO₂ est.</div></div>
+    </div>
+    <div class="section-bar"><div class="sl"></div><span class="section-label">lifetime stats</span><div class="sl"></div></div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-val" id="s-alltime">—</div><div class="stat-lbl">all time used</div></div>
+      <div class="stat-card"><div class="stat-val" id="s-alltime-idle">—</div><div class="stat-lbl">all time idle</div></div>
+      <div class="stat-card"><div class="stat-val good" id="s-alltime-days">—</div><div class="stat-lbl">active days</div></div>
+      <div class="stat-card"><div class="stat-val" id="s-alltime-hops">—</div><div class="stat-lbl">lifetime hops</div></div>
+      <div class="stat-card"><div class="stat-val" id="s-alltime-avg">—</div><div class="stat-lbl">avg / day</div></div>
+      <div class="stat-card"><div class="stat-val" id="s-alltime-focus">—</div><div class="stat-lbl">focus ratio</div></div>
+    </div>
+  </div>
+
+  <!-- ───────────── DEVS ───────────── -->
+  <div class="profile-panel hidden" id="panel-devs">
+    <div class="section-bar"><div class="sl"></div><span class="section-label">performance</span><div class="sl"></div></div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-val anim" id="d-load">—</div><div class="stat-lbl">load time</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="d-ttfb">—</div><div class="stat-lbl">TTFB</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="d-dns">—</div><div class="stat-lbl">DNS</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="d-ssl">—</div><div class="stat-lbl">SSL</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="d-reqs">—</div><div class="stat-lbl">requests</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="d-redirects">—</div><div class="stat-lbl">redirects</div></div>
+    </div>
+    <div class="section-bar"><div class="sl"></div><span class="section-label">core web vitals</span><div class="sl"></div></div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-val anim" id="d-lcp">—</div><div class="stat-lbl">LCP</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="d-cls">—</div><div class="stat-lbl">CLS</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="d-fcp">—</div><div class="stat-lbl">FCP</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="d-fid">—</div><div class="stat-lbl">FID</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="d-render-block">—</div><div class="stat-lbl">render blocking</div></div>
+      <div class="stat-card"><div class="stat-val" id="d-cdn">—</div><div class="stat-lbl">CDN</div></div>
+    </div>
+    <div class="section-bar"><div class="sl"></div><span class="section-label">network &amp; stack</span><div class="sl"></div></div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-val sm" id="d-proto">—</div><div class="stat-lbl">protocol</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="d-errors">—</div><div class="stat-lbl">JS errors</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="d-api">—</div><div class="stat-lbl">API calls</div></div>
+      <div class="stat-card"><div class="stat-val" id="d-ping">—</div><div class="stat-lbl">avg latency</div></div>
+      <div class="stat-card stat-wide"><div class="stat-val sm" id="d-stack">—</div><div class="stat-lbl">tech stack</div></div>
+    </div>
+    <div class="section-bar"><div class="sl"></div><span class="section-label">SEO &amp; assets</span><div class="sl"></div></div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-val anim" id="d-h1">—</div><div class="stat-lbl">H1 tags</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="d-alt">—</div><div class="stat-lbl">missing alt</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="d-imgs">—</div><div class="stat-lbl">images</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="d-oversized">—</div><div class="stat-lbl">oversized</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="d-contrast">—</div><div class="stat-lbl">contrast</div></div>
+      <div class="stat-card"><div class="stat-val" id="d-wcag">—</div><div class="stat-lbl">WCAG</div></div>
+    </div>
+  </div>
+
+  <!-- ───────────── PIXEL ───────────── -->
+  <div class="profile-panel hidden" id="panel-pixel">
+    <div class="section-bar"><div class="sl"></div><span class="section-label">visual design</span><div class="sl"></div></div>
+    <div class="stat-grid">
+      <div class="stat-card stat-full">
+        <div class="palette-header"><div class="stat-lbl">colour palette</div><button class="refresh-btn" id="px-palette-refresh" title="Refresh">↺</button></div>
+        <div id="px-palette" class="palette-row">—</div>
+      </div>
+      <div class="stat-card stat-full"><div class="stat-lbl" style="margin-bottom:5px">fonts in use</div><div id="px-fonts" class="tag-row">—</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="px-imgs">—</div><div class="stat-lbl">images</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="px-oversized">—</div><div class="stat-lbl">oversized</div></div>
+      <div class="stat-card"><div class="stat-val" id="px-seo">—</div><div class="stat-lbl">SEO score</div></div>
+    </div>
+    <div class="section-bar"><div class="sl"></div><span class="section-label">accessibility</span><div class="sl"></div></div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-val anim" id="px-contrast">—</div><div class="stat-lbl">contrast</div></div>
+      <div class="stat-card"><div class="stat-val" id="px-wcag">—</div><div class="stat-lbl">WCAG</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="px-alt">—</div><div class="stat-lbl">missing alt</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="px-aria">—</div><div class="stat-lbl">ARIA marks</div></div>
+      <div class="stat-card"><div class="stat-val anim" id="px-focus">—</div><div class="stat-lbl">focusable</div></div>
+      <div class="stat-card"><div class="stat-val" id="px-darkmode">—</div><div class="stat-lbl">dark mode</div></div>
+    </div>
+    <div class="section-bar"><div class="sl"></div><span class="section-label">SEO &amp; publishing</span><div class="sl"></div></div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-val anim" id="px-h1">—</div><div class="stat-lbl">H1 count</div></div>
+      <div class="stat-card"><div class="stat-val" id="px-desc">—</div><div class="stat-lbl">meta desc</div></div>
+      <div class="stat-card"><div class="stat-val" id="px-og">—</div><div class="stat-lbl">OG image</div></div>
+      <div class="stat-card"><div class="stat-val" id="px-read">—</div><div class="stat-lbl">read time</div></div>
+      <div class="stat-card"><div class="stat-val" id="px-scroll">—</div><div class="stat-lbl">scroll depth</div></div>
+      <div class="stat-card"><div class="stat-val" id="px-speed">—</div><div class="stat-lbl">page speed</div></div>
+    </div>
+  </div>
+
+  <!-- ───────────── SETTINGS ───────────── -->
+  <div class="profile-panel hidden" id="panel-settings">
+    <div class="section-bar"><div class="sl"></div><span class="section-label">appearance</span><div class="sl"></div></div>
+    <div class="settings-section">
+      <div class="setting-row">
+        <span class="setting-label">Theme</span>
+        <div class="theme-picker">
+          <div class="theme-swatch nixie active" id="t-nixie" title="Nixie: dark amber"></div>
+          <div class="theme-swatch ghibli" id="t-ghibli" title="Ghibli: cozy pink"></div>
+          <div class="theme-swatch hacker" id="t-hacker" title="Hacker: matrix green"></div>
+          <div class="theme-swatch midnight" id="t-midnight" title="Midnight: deep blue"></div>
+        </div>
+      </div>
+      <div class="setting-row">
+        <span class="setting-label">Icon badge</span>
+        <select class="setting-select" id="cfg-badge">
+          <option value="none">None</option>
+          <option value="tabs">Tab count</option>
+          <option value="focus">Focus color</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-bar"><div class="sl"></div><span class="section-label">focus &amp; wellness</span><div class="sl"></div></div>
+    <div class="settings-section">
+      <div class="setting-row">
+        <span class="setting-label">Break reminder</span>
+        <label class="toggle"><input type="checkbox" id="cfg-break"><span class="toggle-track"></span></label>
+      </div>
+      <div class="setting-row" id="row-break-thresh">
+        <span class="setting-label">Remind after</span>
+        <select class="setting-select" id="cfg-break-thresh">
+          <option value="30">30 min</option>
+          <option value="45" selected>45 min</option>
+          <option value="60">60 min</option>
+          <option value="90">90 min</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <span class="setting-label">Soft site limits</span>
+        <label class="toggle"><input type="checkbox" id="cfg-limits"><span class="toggle-track"></span></label>
+      </div>
+    </div>
+
+    <div class="section-bar"><div class="sl"></div><span class="section-label">site time limits</span><div class="sl"></div></div>
+    <div class="settings-section">
+      <div class="limits-hint">Soft nudge when you exceed time on a domain. Fully dismissable.</div>
+      <div id="limits-list" class="limits-list"></div>
+      <div class="limits-add-row">
+        <input type="text" class="limits-input" id="limit-domain" placeholder="e.g. reddit.com">
+        <input type="number" class="limits-input short" id="limit-mins" placeholder="min" min="1">
+        <button class="limits-add-btn" id="limit-add">+</button>
+      </div>
+    </div>
+
+    <div class="section-bar"><div class="sl"></div><span class="section-label">pomodoro settings</span><div class="sl"></div></div>
+    <div class="settings-section">
+      <div class="setting-row">
+        <span class="setting-label">Work duration</span>
+        <select class="setting-select" id="cfg-pomo-work">
+          <option value="15">15 min</option>
+          <option value="20">20 min</option>
+          <option value="25" selected>25 min</option>
+          <option value="30">30 min</option>
+          <option value="45">45 min</option>
+          <option value="50">50 min</option>
+          <option value="60">60 min</option>
+          <option value="75">75 min</option>
+          <option value="90">90 min</option>
+          <option value="105">105 min</option>
+          <option value="120">120 min</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <span class="setting-label">Short break</span>
+        <select class="setting-select" id="cfg-pomo-short">
+          <option value="3">3 min</option>
+          <option value="5" selected>5 min</option>
+          <option value="10">10 min</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <span class="setting-label">Long break</span>
+        <select class="setting-select" id="cfg-pomo-long">
+          <option value="10">10 min</option>
+          <option value="15" selected>15 min</option>
+          <option value="20">20 min</option>
+          <option value="30">30 min</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-bar"><div class="sl"></div><span class="section-label">data</span><div class="sl"></div></div>
+    <div class="settings-section">
+      <div class="setting-row">
+        <span class="setting-label">Export all data</span>
+        <button class="setting-btn" id="btn-export">Export JSON</button>
+      </div>
+      <div class="setting-row">
+        <span class="setting-label">Clear all data</span>
+        <button class="setting-btn danger" id="btn-clear">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span class="footer-ts" id="ts-label">--:--:--</span>
+    <span class="footer-ver">v1.0.0</span>
+  </div>
+
+</div><!-- end app-root -->
+
+<script src="domains.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>
