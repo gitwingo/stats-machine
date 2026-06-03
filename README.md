@@ -5,6 +5,21 @@
 Stats Machine is a Manifest V3 Chrome extension that turns your browser into a personal intelligence dashboard. Everything runs **100% locally** — no servers, no accounts, no data leaving your device.
 
 ---
+</div>
+<div align="center">
+  <a href="https://chromewebstore.google.com/detail/stats-machine/nnmpfkghcbgoongpgfmnaonhhcleefde" 
+     style="display: inline-block; 
+            padding: 15px 30px; 
+            font-size: 18px; 
+            color: white; 
+            background-color: #007bff; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            font-weight: bold;
+            font-family: sans-serif;">
+    Install from the Chrome Web Store
+  </a>
+</div>
 
 ## ✨ Features
 
