@@ -7,9 +7,10 @@ Stats Machine is a Manifest V3 Chrome extension that turns your browser into a p
 ---
 <div align="center">
   <a href="https://chromewebstore.google.com/detail/stats-machine/nnmpfkghcbgoongpgfmnaonhhcleefde">
-    <img src="https://shields.io" alt="Chrome Web Store">
+    <img src="https://chrome.com" alt="Chrome Web Store Badge" height="55">
   </a>
 </div>
+
 
 ## ✨ Features
 
